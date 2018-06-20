@@ -8,6 +8,6 @@ public class DemoController {
 
     @RequestMapping("/")
     public String index(){
-        return "spring boot ~~~~~ ";
+        return "spring boot ~！！~~~~ ";
     }
 }
