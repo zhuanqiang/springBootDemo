@@ -41,6 +41,12 @@
 			<artifactId>amqp-client</artifactId>
 			<version>3.6.5</version>
 		</dependency>
+
+		<!-- AOP依赖模块 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-aop</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
