@@ -30,7 +30,7 @@ public class SysLogAspect {
     }
 
     @Before("logPointCut()")//在调用上面 @Pointcut标注的方法前执行以下方法
-    public void doBefore(JoinPoint joinPoint){//用于获取类方法
+    public void doBefore(JoinPoint joinPoint) throws Exception{//用于获取类方法
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request =  attributes.getRequest();
         //url
@@ -45,19 +45,20 @@ public class SysLogAspect {
         logger.info("args={}",joinPoint.getArgs());
 
         String targetName = joinPoint.getTarget().getClass().getName();
-
-//        Method[] methods = Class.forName(targetName).getMethods();
-//        for (Method method : methods) {
-//            if (method.getName().equals(methodName)) {
-//                Class[] classes = method.getParameterTypes();
-//                if (classes.length == arguments.length) {
-//                    //取入参数据
-//                    String description = method.getAnnotation(SystemLog.class).description();
-//                    logger.info("rizhi={}" + description) ;
-//                    break;
-//                }
-//            }
-//        }
+        String methodName = joinPoint.getSignature().getName();
+        Object[] arguments = joinPoint.getArgs();
+        Class targetClass = Class.forName(targetName);
+        Method[] methods = targetClass.getMethods();
+        for (Method method : methods) {
+            if (method.getName().equals(methodName)) {
+                Class[] clazzs = method.getParameterTypes();
+                if (clazzs.length == arguments.length) {
+                    String description = method.getAnnotation(SystemLog.class).description();
+                    System.out.println("aop 日志 = " + description);
+                    break;
+                }
+            }
+        }
     }
 
     @After("logPointCut()")//无论Controller中调用方法以何种方式结束，都会执行
