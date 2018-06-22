@@ -29,39 +29,43 @@ public class SysLogAspect {
 
     }
 
-    @Before("logPointCut()")//在调用上面 @Pointcut标注的方法前执行以下方法
-    public void doBefore(JoinPoint joinPoint) throws Exception{//用于获取类方法
-        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        HttpServletRequest request =  attributes.getRequest();
-        //url
-        logger.info("url ={}",request.getRequestURI());
-        //method
-        logger.info("method={}",request.getMethod());
-        //ip
-        logger.info("ip={}",request.getRemoteAddr());
-        //类方法
-        logger.info("class_method={}",joinPoint.getSignature().getDeclaringTypeName()+'.'+ joinPoint.getSignature().getName());//获取类名及类方法
-        //参数
-        logger.info("args={}",joinPoint.getArgs());
+    @Before("logPointCut()")
+    public void doBefore(JoinPoint joinPoint) throws Exception{
+        try {
+            ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+            HttpServletRequest request =  attributes.getRequest();
+            //url
+            logger.info("url ={}",request.getRequestURI());
+            //method
+            logger.info("method={}",request.getMethod());
+            //ip
+            logger.info("ip={}",request.getRemoteAddr());
+            //类方法
+            logger.info("class_method={}",joinPoint.getSignature().getDeclaringTypeName()+'.'+ joinPoint.getSignature().getName());//获取类名及类方法
+            //参数
+            logger.info("args={}",joinPoint.getArgs());
 
-        String targetName = joinPoint.getTarget().getClass().getName();
-        String methodName = joinPoint.getSignature().getName();
-        Object[] arguments = joinPoint.getArgs();
-        Class targetClass = Class.forName(targetName);
-        Method[] methods = targetClass.getMethods();
-        for (Method method : methods) {
-            if (method.getName().equals(methodName)) {
-                Class[] clazzs = method.getParameterTypes();
-                if (clazzs.length == arguments.length) {
-                    String description = method.getAnnotation(SystemLog.class).description();
-                    System.out.println("aop 日志 = " + description);
-                    break;
+            String targetName = joinPoint.getTarget().getClass().getName();
+            String methodName = joinPoint.getSignature().getName();
+            Object[] arguments = joinPoint.getArgs();
+            Class targetClass = Class.forName(targetName);
+            Method[] methods = targetClass.getMethods();
+            for (Method method : methods) {
+                if (method.getName().equals(methodName)) {
+                    Class[] clazzs = method.getParameterTypes();
+                    if (clazzs.length == arguments.length) {
+                        String description = method.getAnnotation(SystemLog.class).description();
+                        System.out.println("aop 日志 = " + description);
+                        break;
+                    }
                 }
             }
+        }catch (Exception e){
+
         }
     }
 
-    @After("logPointCut()")//无论Controller中调用方法以何种方式结束，都会执行
+    @After("logPointCut()")
     public void doAfter(){
         logger.info("----doAfter-----------");
     }
