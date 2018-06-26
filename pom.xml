@@ -99,7 +99,8 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
-
+<!--		在eclipse中，把资源文件放在src文件夹下，是可以找到的；
+		但是在idea中，直接把资源文件放在src文件夹下，如果不进行设置，是不能被找到的。-->
 		<resources>
 			<!--<resource>-->
 				<!--<directory>src/main/resources</directory>-->

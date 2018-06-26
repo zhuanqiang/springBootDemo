@@ -8,7 +8,7 @@ public class SysConfig {
 
     private String value;
 
-    private Date setTime;
+    private String setTime;
 
     private String setBy;
 
@@ -28,11 +28,11 @@ public class SysConfig {
         this.value = value;
     }
 
-    public Date getSetTime() {
+    public String getSetTime() {
         return setTime;
     }
 
-    public void setSetTime(Date setTime) {
+    public void setSetTime(String setTime) {
         this.setTime = setTime;
     }
 
